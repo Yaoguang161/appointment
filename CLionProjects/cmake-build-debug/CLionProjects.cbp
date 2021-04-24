@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="CLionProjects"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="C:/Users/Asaki/CLionProjects/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Asaki/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Asaki/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Asaki/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Asaki/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="CLionProjects">
+				<Option output="C:/Users/Asaki/CLionProjects/cmake-build-debug/CLionProjects.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/Asaki/CLionProjects/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Users/Asaki/CLionProjects/untitled1/test/Asa"/>
+					<Add directory="C:/Users/Asaki/CLionProjects/untitled1000"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/9.2.0/include/c++"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/9.2.0/include/c++/mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/9.2.0/include/c++/backward"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/9.2.0/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/9.2.0/../../../../include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/9.2.0/include-fixed"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Asaki/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 CLionProjects"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Asaki/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Asaki/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Asaki/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="CLionProjects/fast">
+				<Option output="C:/Users/Asaki/CLionProjects/cmake-build-debug/CLionProjects.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/Asaki/CLionProjects/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Users/Asaki/CLionProjects/untitled1/test/Asa"/>
+					<Add directory="C:/Users/Asaki/CLionProjects/untitled1000"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/9.2.0/include/c++"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/9.2.0/include/c++/mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/9.2.0/include/c++/backward"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/9.2.0/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/9.2.0/../../../../include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/9.2.0/include-fixed"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Asaki/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 CLionProjects/fast"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Asaki/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Asaki/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Asaki/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="C:/Users/Asaki/CLionProjects/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Asaki/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Asaki/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Asaki/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Asaki/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="C:/Users/Asaki/CLionProjects/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Asaki/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Asaki/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Asaki/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Asaki/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled/main.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/a.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/b.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/c.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/d.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/e.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/f.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/g.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/h.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/i.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/j.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/k.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/l.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/m.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/n.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/o.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/p.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/q.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/r.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/s.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/t.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/u.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/v.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/w.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/x.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/y.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day01/z.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/a.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/b.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/c.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/d.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/e.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/f.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/g.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/h.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/i.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/j.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/k.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/l.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/m.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/n.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/o.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/p.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/q.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/r.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/s.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/t.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/u.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/v.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/w.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/x.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/y.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day02/z.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day03/1.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day03/10.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day03/11.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day03/12.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day03/2.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day03/3.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day03/4.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day03/5.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day03/6.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day03/7.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day03/8.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day03/9.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day04/1.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day04/10.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day04/2.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day04/3.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day04/4.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day04/5.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day04/6.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day04/7.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day04/8.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day04/9.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day05/1.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day05/2.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day05/3.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day05/4.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day05/5.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day05/6.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day05/7.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day06/1.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day06/10.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day06/2.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day06/3.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day06/4.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day06/5.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day06/6.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day06/7.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day06/8.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day06/9.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day07/1.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day07/10.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day07/2.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day07/3.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day07/4.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day07/5.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day07/6.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day07/7.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day07/8.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/day07/9.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/test/Asa/boss.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/test/Asa/boss.h">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/test/Asa/employee.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/test/Asa/employee.h">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/test/Asa/main.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/test/Asa/manager.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/test/Asa/manager.h">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/test/Asa/worker.h">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/test/Asa/workerManager.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1/test/Asa/workerManager.h">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1000/boss.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1000/boss.h">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1000/employee.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1000/employee.h">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1000/main.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1000/manager.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1000/manager.h">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1000/worker.h">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1000/workerManager.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/untitled1000/workerManager.h">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="C:/Users/Asaki/CLionProjects/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
