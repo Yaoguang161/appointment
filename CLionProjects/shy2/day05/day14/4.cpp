@@ -1,6 +1,3 @@
-//
-// Created by Asaki on 2021/4/23.
-//
 #include<iostream>
 using namespace std;
 const int N = 1e3+7;
