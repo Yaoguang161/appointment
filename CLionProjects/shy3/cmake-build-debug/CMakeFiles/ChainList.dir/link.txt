@@ -1,3 +1,0 @@
-"D:\CLion\CLion 2020.1\bin\cmake\win\bin\cmake.exe" -E remove -f CMakeFiles\ChainList.dir/objects.a
-C:\MinGW\bin\ar.exe cr CMakeFiles\ChainList.dir/objects.a @CMakeFiles\ChainList.dir\objects1.rsp
-C:\MinGW\bin\g++.exe -g   -Wl,--whole-archive CMakeFiles\ChainList.dir/objects.a -Wl,--no-whole-archive  -o ChainList.exe -Wl,--out-implib,libChainList.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\ChainList.dir\linklibs.rsp

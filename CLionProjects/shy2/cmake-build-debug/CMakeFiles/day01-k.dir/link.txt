@@ -1,3 +1,0 @@
-"D:\CLion\CLion 2020.1\bin\cmake\win\bin\cmake.exe" -E remove -f CMakeFiles\day01-k.dir/objects.a
-C:\MinGW\bin\ar.exe cr CMakeFiles\day01-k.dir/objects.a @CMakeFiles\day01-k.dir\objects1.rsp
-C:\MinGW\bin\g++.exe -g   -Wl,--whole-archive CMakeFiles\day01-k.dir/objects.a -Wl,--no-whole-archive  -o day01-k.exe -Wl,--out-implib,libday01-k.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\day01-k.dir\linklibs.rsp
