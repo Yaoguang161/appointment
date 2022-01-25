@@ -480,7 +480,64 @@ div1.o:div1.c
     1. src = $(wildcard ./*.c):匹配当前工作目录下的所有.c文件.将文件名组成列表,赋值给变量src
     2. obj = $(patsubst %.c, %.o, &(src)): 将参数3中,包含参数1的部分,替换成参数2.(obj = add.o sub.o div1.o)
 
+    clean: (没有依赖) 
+        ```
+        -rm -rf $(obj) a.out "-":的作用是删除不存在的文件时,不报错.顺序执行结束.
+        ```
+例子:
+``` 
+src = $(wildcard *.c) # add.c sub.c div1.c hello.c
+obj = $(patsubst %.c,%.o,$(src)) # add.o sub.o div1.o hello.o
 
+All:a.out
+
+a.out: $(obj)
+    gcc $(obj) -o a.out
+
+add.o:add.c
+    gcc -c add.c -o add.o
+sub.o:sub.c
+    gcc -c sub.c -o sub.o
+hello.o:hello.c
+    gcc -c hello.c -o hello.o
+div1.o:div1.c
+    gcc -c div1.c -o div1.o
+
+
+clean:
+    -rm -rf $(obj) a.out
+```
+
+
+* 三个自动变量:
+
+        1) $@: 在规则的命令中,表示规则中的目标
+        2) $^: 在规则的命令中,表示所有依赖条件
+        3) $<: 在规则的命令中,表示第一个依赖条件
+改写:
+``` 
+src = $(wildcard *.c) # add.c sub.c div1.c hello.c
+obj = $(patsubst %.c,%.o,$(src)) # add.o sub.o div1.o hello.o
+
+All:a.out
+
+a.out: $(obj)
+    gcc $^ -o $@
+
+add.o:add.c
+    gcc -c $< -o $@
+sub.o:sub.c
+    gcc -c $< -o $@
+hello.o:hello.c
+    gcc -c $< -o $@
+div1.o:div1.c
+    gcc -c $< -o $@
+
+
+clean:
+    -rm -rf $(obj) a.out
+```
+    
 
 
 
