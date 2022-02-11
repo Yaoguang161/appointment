@@ -391,7 +391,7 @@ vim下使用shell命令：末行模式
 3. 头文件守卫
     * 源码在前,库在后
     * 例如 : `gcc test.c libmymath.a -o test -Wall (libmymath.a是库,test.c是c文件,test是生成文件)`
-    ```
+    ```C++
     #ifndef _HEAD_H_
     #define _HEAD_H_
     .....
@@ -470,7 +470,7 @@ vim下使用shell命令：末行模式
     一个规则,两个函数,三个变量
  * 一个规则:
  *  命名: makefile Makefile(如果名字不叫makefile 需要加 -f 例如: make -f m6)
-  ```
+  ``` 
     目标: 依赖条件 
           (一个tab缩进) 命令
           1.目标的时间必须晚于依赖条件的时间,否则,更新目标
@@ -479,7 +479,7 @@ vim下使用shell命令：末行模式
      
   ```
 例如
- ```
+ ```makefile
  ALL:a.out
 hello.o:hello.c
         gcc -c hello.c -o hello.o
@@ -493,7 +493,7 @@ div1.o:div1.c
 a.out:hello.o add.o sub.o div1.o
         gcc hello.o add.o sub.o div1.o -o a.out
  ```
-```
+```makefile
 a.out:hello.o add.o sub.o div1.o
         gcc hello.o add.o sub.o div1.o -o a.out
 
@@ -511,11 +511,11 @@ div1.o:div1.c
     2. obj = $(patsubst %.c, %.o, &(src)): 将参数3中,包含参数1的部分,替换成参数2.(obj = add.o sub.o div1.o)
 
     clean: (没有依赖) 
-        ```
+        ```makefile
         -rm -rf $(obj) a.out "-":的作用是删除不存在的文件时,不报错.顺序执行结束.
         ```
 例子:
-``` 
+``` makefile
 src = $(wildcard *.c) # add.c sub.c div1.c hello.c
 obj = $(patsubst %.c,%.o,$(src)) # add.o sub.o div1.o hello.o
 
@@ -545,7 +545,7 @@ clean:
         2) $^: 在规则的命令中,表示所有依赖条件
         3) $<: 在规则的命令中,表示第一个依赖条件.如果将该变量应用在规则模式中,它可将依赖条件中的依赖一次取出,套用模式规则.
 改写:
-``` 
+``` makefile
 src = $(wildcard *.c) # add.c sub.c div1.c hello.c
 obj = $(patsubst %.c,%.o,$(src)) # add.o sub.o div1.o hello.o
 
@@ -570,7 +570,7 @@ clean:
     
 
 * 模式规则(接近最终效果):
-``` 
+``` makefile
 src = $(wildcard *.c) # add.c sub.c div1.c hello.c
 obj = $(patsubst %.c,%.o,$(src)) # add.o sub.o div1.o hello.o
 
@@ -586,7 +586,7 @@ clean:
     -rm -rf $(obj) a.out
 ```
 * 静态模式规则:
-    ``` 
+    ``` makefile
     src = $(wildcard *.c) # add.c sub.c div1.c hello.c
     obj = $(patsubst %.c,%.o,$(src)) # add.o sub.o div1.o hello.o
 
@@ -609,7 +609,7 @@ clean:
            -f 指定文件执行make命令
 
 * 最终形态
-    ``` 
+    ``` makefile
     src = $(wildcard *.c) # add.c sub.c div1.c hello.c
     obj = $(patsubst %.c,%.o,$(src)) # add.o sub.o div1.o hello.o
 
@@ -628,7 +628,7 @@ clean:
     ```
 * 可以选择调参版本的:
 
-    ``` 
+    ``` makefile
     src = $(wildcard *.c) # add.c sub.c div1.c hello.c
     obj = $(patsubst %.c,%.o,$(src)) # add.o sub.o div1.o hello.o
 
@@ -649,7 +649,7 @@ clean:
     ```
 * 练习题: 把.c文件放在src文件下,.o文件放在obj文件下,a.out放在makefile同级目录下,头文件放在ins文件下
 
-    ``` 
+    ``` makefile
     src = $(wildcard ./src/*.c) # ./src/add.c ./src/sub.c
     obj = $(patsubst ./src/%.c,./obj/%.o,$(src)) # ./obj/add.o ./obj/sub.o
 
@@ -672,7 +672,7 @@ clean:
     ```
 * 作业: 将.c文件生成.out文件,clean删除所有.out文件
     
-    ```
+    ```makefile
     src = $(wildcard *.c)
     target = $(patsubst %.c, % , $(src))
 
@@ -725,16 +725,7 @@ clean:
 
 
 # 14 read函数
-```
-    #include<iostream>
-    using namespace sdt;
-    int main(){
 
-        cout <<" test" << endl; 
-
-        return 0;
-    }
-```
 
         
 
