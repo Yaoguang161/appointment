@@ -1,3 +1,40 @@
+
+* [1.Linux文件介绍](#1.Linux文件介绍)
+* [2.文件操作](#2.文件操作)
+    * [2.1文件编辑操作](#2.1文件编辑操作)
+    * [2.2 Linux系统文件类型](#22-linux系统文件类型)
+    * [2.3文件查看操作](#2.3文件查看操作)
+* [3.软链接与硬链接](#3.软链接与硬链接)
+
+- [1.Linux文件介绍](#1linux文件介绍)
+- [2.文件操作](#2文件操作)
+  - [2.1文件编辑操作](#21文件编辑操作)
+  - [2.2 Linux系统文件类型](#22-linux系统文件类型)
+  - [2.3文件查看操作](#23文件查看操作)
+- [3.软链接与硬链接](#3软链接与硬链接)
+- [4.查看修改用户和用户组](#4查看修改用户和用户组)
+- [5.find命令](#5find命令)
+- [6.grep命令: 找文件内容](#6grep命令-找文件内容)
+- [7.压缩文件和下载文件](#7压缩文件和下载文件)
+- [8.Vim基本操作](#8vim基本操作)
+  - [8.1 vim基本操作-跳转和删字符](#81-vim基本操作-跳转和删字符)
+  - [8.2 vim基本操作-删除](#82-vim基本操作-删除)
+  - [8.3 vim基本操作-复制粘贴](#83-vim基本操作-复制粘贴)
+  - [8.4 vim基本操作-查找和替换](#84-vim基本操作-查找和替换)
+  - [8.5 vim基本操作-其他(分屏)](#85-vim基本操作-其他分屏)
+- [9.gcc编译](#9gcc编译)
+- [10.动态库与静态库](#10动态库与静态库)
+  - [10.1对比](#101对比)
+  - [10.2静态库制作及使用](#102静态库制作及使用)
+  - [10.3动态库及使用](#103动态库及使用)
+- [11. gdb调试工具 (大前提,程序是你自己写的)](#11-gdb调试工具-大前提程序是你自己写的)
+  - [11.1基础指令](#111基础指令)
+  - [11.2 其他指令](#112-其他指令)
+- [12.Makefile项目管理](#12makefile项目管理)
+- [13.open函数()](#13open函数)
+- [14 read函数](#14-read函数)
+
+
 # 1.Linux文件介绍
 
 `Linux`系统中 "所见皆文件" 
@@ -59,7 +96,7 @@
 
 
 
-# 4 .查看修改用户和用户组
+# 4.查看修改用户和用户组
 
 1. `whoami` : 查看当前用户(`root` 或普通用户)
 2. `exit` : 退出`root`用户
@@ -439,14 +476,14 @@ vim下使用shell命令：末行模式
 # 12.Makefile项目管理
     一个规则,两个函数,三个变量
  * 一个规则:
- *  命名: makefile Makefile
+ *  命名: makefile Makefile(如果名字不叫makefile 需要加 -f 例如: make -f m6)
   ```
     目标: 依赖条件 
           (一个tab缩进) 命令
           1.目标的时间必须晚于依赖条件的时间,否则,更新目标
           2.依赖条件如果不存在,找寻新的规则去产生依赖.
     ALL: 指定makefile的终极目标(一般makefile的第一行为终极目标,不加all只运行第一行)
-
+     
   ```
 例如
  ```
@@ -513,7 +550,7 @@ clean:
 
         1) $@: 在规则的命令中,表示规则中的目标
         2) $^: 在规则的命令中,表示所有依赖条件
-        3) $<: 在规则的命令中,表示第一个依赖条件
+        3) $<: 在规则的命令中,表示第一个依赖条件.如果将该变量应用在规则模式中,它可将依赖条件中的依赖一次取出,套用模式规则.
 改写:
 ``` 
 src = $(wildcard *.c) # add.c sub.c div1.c hello.c
@@ -539,27 +576,169 @@ clean:
 ```
     
 
+* 模式规则(接近最终效果):
+``` 
+src = $(wildcard *.c) # add.c sub.c div1.c hello.c
+obj = $(patsubst %.c,%.o,$(src)) # add.o sub.o div1.o hello.o
+
+All:a.out
+
+a.out: $(obj)
+    gcc $^ -o $@
+
+%.o:%.c
+    gcc -c $< -o $@
+
+clean:
+    -rm -rf $(obj) a.out
+```
+* 静态模式规则:
+    ``` 
+    src = $(wildcard *.c) # add.c sub.c div1.c hello.c
+    obj = $(patsubst %.c,%.o,$(src)) # add.o sub.o div1.o hello.o
+
+    All:a.out
+
+    a.out: $(obj)
+        gcc $^ -o $@
+
+    #静态模式规则,指定给谁用
+    $(obj):%.o:%.c
+        gcc -c $< -o $@
+
+    clean:
+        -rm -rf $(obj) a.out
+    ```
+* 小知识:
+   * make clean -n 模拟删除,但是不会删除,让你知道你会删除哪些文件
+   * .PHONY: clean ALL : 加上伪目标,可以让你在目录下有名叫clean,ALL文件时使用make命令不出错
+   * 参数: -n 模拟执行make,make clean命令
+           -f 指定文件执行make命令
+
+* 最终形态
+    ``` 
+    src = $(wildcard *.c) # add.c sub.c div1.c hello.c
+    obj = $(patsubst %.c,%.o,$(src)) # add.o sub.o div1.o hello.o
+
+    All:a.out
+
+    a.out: $(obj)
+        gcc $^ -o $@
+
+    $(obj):%.o:%.c
+        gcc -c $< -o $@
+
+    clean:
+        -rm -rf $(obj) a.out
+
+     .PHONY: clean ALL   
+    ```
+* 可以选择调参版本的:
+
+    ``` 
+    src = $(wildcard *.c) # add.c sub.c div1.c hello.c
+    obj = $(patsubst %.c,%.o,$(src)) # add.o sub.o div1.o hello.o
+
+    myArgs= -Wall -g
+
+    All:a.out
+
+    a.out: $(obj)
+        gcc $^ -o $@ $(myArgs)
+
+    $(obj):%.o:%.c
+        gcc -c $< -o $@ $(myArgs)
+
+    clean:
+        -rm -rf $(obj) a.out
+
+     .PHONY: clean ALL   
+    ```
+* 练习题: 把.c文件放在src文件下,.o文件放在obj文件下,a.out放在makefile同级目录下,头文件放在ins文件下
+
+    ``` 
+    src = $(wildcard ./src/*.c) # ./src/add.c ./src/sub.c
+    obj = $(patsubst ./src/%.c,./obj/%.o,$(src)) # ./obj/add.o ./obj/sub.o
+
+    inc_path =./inc
+
+    myArgs= -Wall -g
+
+    All:a.out
+
+    a.out: $(obj)
+        gcc $^ -o $@ $(myArgs)
+
+    $(obj):./obj/%.o:./src/%.c
+        gcc -c $< -o $@ $(myArgs) -I $(inc_path)
+
+    clean:
+        -rm -rf $(obj) a.out
+
+     .PHONY: clean ALL   
+    ```
+* 作业: 将.c文件生成.out文件,clean删除所有.out文件
+    
+    ```
+    src = $(wildcard *.c)
+    target = $(patsubst %.c, % , $(src))
+
+    ALL: $(target)
+
+    %:%.c
+        gcc $< -o $@
+
+    clean: 
+        -rm -rf $(target)
+
+    .PHONY: clean ALL
+    ```
+
+
+
+# 13.open函数()
+* open函数:
+
+        
+        int open(char *pathname, int flags)   #inlcude<unistd.h>
+            参数:
+                pathname: 欲打开的文件名
+                flags: 文件打开方式:     #include<fcntl.h>
+                    O_RDONLY | O_WRONLY | O_RDWR(只读,只写,读写)
+                    O_CREAT|O_APPEND|O_TRUNC|O_EXCLO_NONBLOCK(创建|追加|截断为零|判断是否存在|非阻塞)
+            返回值:
+                成功: 打开文件所得到对应的 文件描述符(整数)
+                失败: -1, 设置errno
+
+        int open(char *pathname, int flags,mode_t mode)
+            参数:
+                pathname: 欲打开的文件名
+                flags: 文件打开方式:
+                    O_RDONLY | O_WRONLY | O_RDWR(只读,只写,读写)
+                    O_CREAT|O_APPEND|O_TRUNC|O_EXCLO_NONBLOCK(创建|追加|截断为零|判断是否存在|非阻塞)
+                mode: 参数3使用的前提,参2指定了O_CREAT. 取值8进制数,用来描述文件的访问权限. rwx 0664
+                 创建文件最终权限 = mode & ~umask   
+            返回值:
+                成功: 打开文件所得到对应的 文件描述符(整数)
+                失败: -1, 设置errno
+* close函数:
+        int close(int fd):
+* 错误处理函数:     与errno相关.
+    ```
+    printf("xxx errno: %d \n",errno);
+    char *strerror(int errnum);
+                printf("xxx error: %s\n",strerror(errno));
+    ```
+
+
+# 14 read函数
+
+
+        
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-   
-
-   
-
-   
-
-   
 
 
 
