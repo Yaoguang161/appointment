@@ -25,7 +25,15 @@
   - [11.2 其他指令](#112-其他指令)
 - [12.Makefile项目管理](#12makefile项目管理)
 - [13.open函数()](#13open函数)
-- [14 read函数](#14-read函数)
+- [14.link函数和UNlink隐式回收](#14link函数和unlink隐式回收)
+  - [14.1link函数](#141link函数)
+  - [14.2Unlink函数](#142unlink函数)
+- [15.文件目录rwx权限差异](#15文件目录rwx权限差异)
+- [16.目录操作函数](#16目录操作函数)
+  - [16.1 opendir函数和closedir函数](#161-opendir函数和closedir函数)
+  - [16.2read函数和write函数](#162read函数和write函数)
+- [17.文件描述符](#17文件描述符)
+- [18.阻塞.非阻塞](#18阻塞非阻塞)
 
 
 # 1.Linux文件介绍
@@ -77,6 +85,7 @@
 4. `head 文件名`: 显示默认前10行
 5. `tail 文件名`: 显示后10行
 6. `tree 文件名`: 按树形显示文件目录
+7. `readlink 文件名`: 读取符号连接文件本身内容,得到链接所指向的文件名. 
 
 # 3.软链接与硬链接
 
@@ -692,7 +701,7 @@ clean:
 # 13.open函数()
 * open函数:
 
-        
+```C++        
         int open(char *pathname, int flags)   #inlcude<unistd.h>
             参数:
                 pathname: 欲打开的文件名
@@ -713,36 +722,179 @@ clean:
                  创建文件最终权限 = mode & ~umask   
             返回值:
                 成功: 打开文件所得到对应的 文件描述符(整数)
-                失败: -1, 设置errno
+             失败: -1, 设置errno
+```  
 * close函数:
         int close(int fd):
 * 错误处理函数:     与errno相关.
-    ```
+    ```C++
     printf("xxx errno: %d \n",errno);
     char *strerror(int errnum);
                 printf("xxx error: %s\n",strerror(errno));
     ```
 
 
-# 14 read函数
+# 14.link函数和UNlink隐式回收
+## 14.1link函数
+* 给文件改名:
+    ```C++
+     #include<stdio.h>
+     #include<stdlib.h>
+     #include<string.h>
+     #include<unistd.h>
+     #include<pthread.h>
+      int main(int argc,char *argv[]){
+         link(argv[1],argv[2]);
+         unlink(argv[1]);
+            return 0;
+        }
+
+        //运行时: ./myMv t.c test.c 运行myMv程序,将t.c改成test.c
+    ```
+
+## 14.2Unlink函数
+* unlink函数: 删除一个文件的目录项.  
+  * `int unlink(const char *pathname); 成功: 0; 失败: -1 设置errno为相应值.`      
+  * 注意: Linux下删除文件的机制: 不断将`st nlink -1`,直至减到0为止.无目录项对应的文件,将会被操作系统择机释放.(具体文件由系统调度算法决定.)  
+  * 因此,我们删除文件,从某种意义上说,只是让文件具备了被释放的条件.要等到所有打开该文件的进程关闭该系统,系统才会挑时间将该文件释放掉.
+    ```C++
+        #include<stdio.h>
+        #include<unistd.h>
+        #include<string.h>
+        int main(){
+            int fd,ret;
+            char *p = "test of unlink \n";
+            char *p = "after write something. \n";
+
+            fd = open("temp.txt",O_RDWR | O_CREAT | O_TRUNC, 0644);
+            if(fd < 0){
+                perror("open temp error");
+                exit(1);
+            }
+
+            ret = unlink("temp.txt");  //具备了被释放的条件
+            if(ret < 0){
+                perror("unlink error");
+                exit(1);    
+            }
+
+            ret = write(fd,p,strlen(p));
+            if(ret ==  -1){
+                perror("----write error");
+            }
+
+            printf("hi! I'm printf\n");
+            ret = write(fd,p2,strlen(p2));
+            if(ret == -1){
+                perror("----write error");
+            }
+
+            printf("Enter anykey continue\n");
+            getchar();
+
+            close(fd);
+
+            return 0;
+        }
+        //temp.txt临时存在,运行结束后被干掉.
+
+    ```
+* 隐式回收:(尽量不要使用)   
+    当进程结束运行时,所有该进程打开的文件会被关闭,申请的内存空间会被释放.系统的这一特征被称之为隐式回收系统资源.
 
 
+# 15.文件目录rwx权限差异
+|   | r  |w   |x
+:---|:--:|:--:|:---  
+文件| 文件的内容可以被查看<br>cat,more,less...   |内容可以被修改<br>vi |可以运行一个进程<br>./文件名
+目录|目录可以被浏览<br>ls,tree... |创建,删除,修改文件<br>mv,touch,mkdir... | 可以被打开,进入<br>cd...
+
+
+# 16.目录操作函数
+## 16.1 opendir函数和closedir函数
+```C++
+    #include<stdio.h>
+    #include<stdlib.h>
+    #include<string.h>
+    #include<unistd.h>
+    #include<dirent.h>
+    #include<pthread.h>
+    int main(int argc, char *argv[]){
+        DIR * dp;
+        struct dirent *sdp;
+
+        dp = opendir(argv[1]);
+        if(dp == NULL){
+            perror("opendir error");
+            exit(1);
+        }
+
+        while((sdp = readdir(dp)) != NULL){
+            if((strcmp(sdp->d_name,".") == 0))
+                continue;            
+            if((strcmp(sdp->d_name,"..") == 0))
+                continue;
+
+                printf("%s\t",sdp->d_name);
+        }
+        printf("\n");
+        closedir(dp);
+        return 0;
+    }
+    //./myls .. 显示上一级目录的所有文件(不显示. 和 ..),
+    //./myls . 显示当前目录的所有文件(不显示. 和 ..),
+```
+```C++
+    //三个函数
+     DIR * opendir(char *name);
+     int  closedir(DIR *dp);
+     struct dirent *readdir(DIR *dp);
+        struct dirent{
+            inode
+            char dname[256];
+        }
+
+```
+## 16.2read函数和write函数
+* read函数:  
+     `ssize_t read(int fd, void *buf, size_t count);  `  
+    ```
+        参数:  
+            fd: 文件描述符
+            buf:存数据的缓冲区
+            count: 缓冲区大小
+        返回值: 
+            0: 读到文件末尾.
+            成功:   >0 读到的字节数.
+            失败:   -1, 设置errno
+            -1: 并且errno = EAGIN 或 EWOULDBLOCK,说明不是read失败,而是read在以非阻塞方式读取一个设备文件(网络文件),并且文件无数据
+
+    ```
+* write函数:
+  `ssize_t write(int fd,const void *buf, size_t count)`
+  ```
+        参数:
+            fd:文件描述符号
+            buf: 代写出数据的缓冲区
+            count: 数据大小.
+        返回值: 
+            成功: 写入的字节数
+            失败: -1, 设置errno
+  ```
         
+# 17.文件描述符
+PCB进程控制块: 本质 结构体.  
+成员: 文件描述符表.  
+文件描述符: 0/1/2/3/4...../1023  表中可用的最小的.  
+0 - STDIN_FILENO  
+1 - STDOUT_FILENO  
+2 - STDERR_FILENO  
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# 18.阻塞.非阻塞
+是设备文件.网络文件的属性.  
+产生阻塞的场景.读设备文件.读网络文件.(读常规文件无阻塞概念)  
+/dev/tty  -- 终端文件.  
+`open("/dev/tty",O_RDWR | O_NONBLOCK)` --设置 / dev/tty 非阻塞状态.(默认为阻塞状态)
 
 
 
