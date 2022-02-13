@@ -32,8 +32,12 @@
 - [16.目录操作函数](#16目录操作函数)
   - [16.1 opendir函数和closedir函数](#161-opendir函数和closedir函数)
   - [16.2read函数和write函数](#162read函数和write函数)
-- [17.文件描述符](#17文件描述符)
+- [17.文件描述符fd](#17文件描述符fd)
+  - [17.1文件描述符合打开文件之间的关系](#171文件描述符合打开文件之间的关系)
 - [18.阻塞.非阻塞](#18阻塞非阻塞)
+- [19.递归遍历目录](#19递归遍历目录)
+- [20.重定向dup和dup2](#20重定向dup和dup2)
+- [21.fcntl函数实现dup](#21fcntl函数实现dup)
 
 
 # 1.Linux文件介绍
@@ -523,7 +527,7 @@ div1.o:div1.c
         ```makefile
         -rm -rf $(obj) a.out "-":的作用是删除不存在的文件时,不报错.顺序执行结束.
         ```
-例子:
+    例子:
 ``` makefile
 src = $(wildcard *.c) # add.c sub.c div1.c hello.c
 obj = $(patsubst %.c,%.o,$(src)) # add.o sub.o div1.o hello.o
@@ -576,7 +580,7 @@ div1.o:div1.c
 clean:
     -rm -rf $(obj) a.out
 ```
-    
+
 
 * 模式规则(接近最终效果):
 ``` makefile
@@ -598,16 +602,16 @@ clean:
     ``` makefile
     src = $(wildcard *.c) # add.c sub.c div1.c hello.c
     obj = $(patsubst %.c,%.o,$(src)) # add.o sub.o div1.o hello.o
-
+    
     All:a.out
-
+    
     a.out: $(obj)
         gcc $^ -o $@
-
+    
     #静态模式规则,指定给谁用
     $(obj):%.o:%.c
         gcc -c $< -o $@
-
+    
     clean:
         -rm -rf $(obj) a.out
     ```
@@ -621,18 +625,18 @@ clean:
     ``` makefile
     src = $(wildcard *.c) # add.c sub.c div1.c hello.c
     obj = $(patsubst %.c,%.o,$(src)) # add.o sub.o div1.o hello.o
-
+    
     All:a.out
-
+    
     a.out: $(obj)
         gcc $^ -o $@
-
+    
     $(obj):%.o:%.c
         gcc -c $< -o $@
-
+    
     clean:
         -rm -rf $(obj) a.out
-
+    
      .PHONY: clean ALL   
     ```
 * 可以选择调参版本的:
@@ -640,20 +644,20 @@ clean:
     ``` makefile
     src = $(wildcard *.c) # add.c sub.c div1.c hello.c
     obj = $(patsubst %.c,%.o,$(src)) # add.o sub.o div1.o hello.o
-
+    
     myArgs= -Wall -g
-
+    
     All:a.out
-
+    
     a.out: $(obj)
         gcc $^ -o $@ $(myArgs)
-
+    
     $(obj):%.o:%.c
         gcc -c $< -o $@ $(myArgs)
-
+    
     clean:
         -rm -rf $(obj) a.out
-
+    
      .PHONY: clean ALL   
     ```
 * 练习题: 把.c文件放在src文件下,.o文件放在obj文件下,a.out放在makefile同级目录下,头文件放在ins文件下
@@ -661,38 +665,38 @@ clean:
     ``` makefile
     src = $(wildcard ./src/*.c) # ./src/add.c ./src/sub.c
     obj = $(patsubst ./src/%.c,./obj/%.o,$(src)) # ./obj/add.o ./obj/sub.o
-
+    
     inc_path =./inc
-
+    
     myArgs= -Wall -g
-
+    
     All:a.out
-
+    
     a.out: $(obj)
         gcc $^ -o $@ $(myArgs)
-
+    
     $(obj):./obj/%.o:./src/%.c
         gcc -c $< -o $@ $(myArgs) -I $(inc_path)
-
+    
     clean:
         -rm -rf $(obj) a.out
-
+    
      .PHONY: clean ALL   
     ```
 * 作业: 将.c文件生成.out文件,clean删除所有.out文件
-    
+  
     ```makefile
     src = $(wildcard *.c)
     target = $(patsubst %.c, % , $(src))
-
+    
     ALL: $(target)
-
+    
     %:%.c
         gcc $< -o $@
-
+    
     clean: 
         -rm -rf $(target)
-
+    
     .PHONY: clean ALL
     ```
 
@@ -723,7 +727,7 @@ clean:
             返回值:
                 成功: 打开文件所得到对应的 文件描述符(整数)
              失败: -1, 设置errno
-```  
+```
 * close函数:
         int close(int fd):
 * 错误处理函数:     与errno相关.
@@ -748,7 +752,7 @@ clean:
          unlink(argv[1]);
             return 0;
         }
-
+    
         //运行时: ./myMv t.c test.c 运行myMv程序,将t.c改成test.c
     ```
 
@@ -765,39 +769,39 @@ clean:
             int fd,ret;
             char *p = "test of unlink \n";
             char *p = "after write something. \n";
-
+    
             fd = open("temp.txt",O_RDWR | O_CREAT | O_TRUNC, 0644);
             if(fd < 0){
                 perror("open temp error");
                 exit(1);
             }
-
+    
             ret = unlink("temp.txt");  //具备了被释放的条件
             if(ret < 0){
                 perror("unlink error");
                 exit(1);    
             }
-
+    
             ret = write(fd,p,strlen(p));
             if(ret ==  -1){
                 perror("----write error");
             }
-
+    
             printf("hi! I'm printf\n");
             ret = write(fd,p2,strlen(p2));
             if(ret == -1){
                 perror("----write error");
             }
-
+    
             printf("Enter anykey continue\n");
             getchar();
-
+    
             close(fd);
-
+    
             return 0;
         }
         //temp.txt临时存在,运行结束后被干掉.
-
+    
     ```
 * 隐式回收:(尽量不要使用)   
     当进程结束运行时,所有该进程打开的文件会被关闭,申请的内存空间会被释放.系统的这一特征被称之为隐式回收系统资源.
@@ -868,7 +872,7 @@ clean:
             成功:   >0 读到的字节数.
             失败:   -1, 设置errno
             -1: 并且errno = EAGIN 或 EWOULDBLOCK,说明不是read失败,而是read在以非阻塞方式读取一个设备文件(网络文件),并且文件无数据
-
+    
     ```
 * write函数:
   `ssize_t write(int fd,const void *buf, size_t count)`
@@ -881,8 +885,28 @@ clean:
             成功: 写入的字节数
             失败: -1, 设置errno
   ```
-        
-# 17.文件描述符
+  
+# 17.文件描述符fd
+
+* 在Linux系统中一切皆可以看成是文件，文件又可分为：普通文件、目录文件、链接文件和设备文件。  
+* 文件描述符（file descriptor）是内核为了高效管理已被打开的文件所创建的索引，其是一个非负整数（通常是小整数），用于指代被打开的文件，所有执行I/O操作的系统调用都通过文件描述符。  
+* 程序刚刚启动的时候，
+  * 0是标准输入，  
+  * 1是标准输出，
+  * 2是标准错误。
+  * 如果此时去打开一个新的文件，它的文件描述符会是3。  
+  ————————————————
+
+* 由于进程级文件描述符表的存在，不同的进程中会出现相同的文件描述符，它们可能指向同一个文件，也可能指向不同的文件
+
+## 17.1文件描述符合打开文件之间的关系
+每一个文件描述符会与一个打开文件相对应，同时，不同的文件描述符也会指向同一个文件。相同的文件可以被不同的进程打开也可以在同一个进程中被多次打开。系统为每一个进程维护了一个文件描述符表，该表的值都是从0开始的，所以在不同的进程中你会看到相同的文件描述符，这种情况下相同文件描述符有可能指向同一个文件，也有可能指向不同的文件。具体情况要具体分析，要理解具体其概况如何，需要查看由内核维护的3个数据结构。
+ 1. 进程级的文件描述符表
+ 2. 系统级的打开文件描述符表
+ 3. 文件系统的i-node表
+
+
+
 PCB进程控制块: 本质 结构体.  
 成员: 文件描述符表.  
 文件描述符: 0/1/2/3/4...../1023  表中可用的最小的.  
@@ -897,5 +921,111 @@ PCB进程控制块: 本质 结构体.
 `open("/dev/tty",O_RDWR | O_NONBLOCK)` --设置 / dev/tty 非阻塞状态.(默认为阻塞状态)
 
 
+# 19.递归遍历目录
+```C++
+        #include <stdio.h>
+        #include <stdlib.h>
+        #include <string.h>
+        #include <unistd.h>
+        #include <sys/stat.h>
+        #include <dirent.h>
+        #include <pthread.h>
+
+        void isFile(char *name);
+
+        // 打开目录读取,处理目录
+        void read_dir(char *dir, void (*func)(char *))
+        {
+            char path[256];
+            DIR *dp;
+            struct dirent *sdp;
+
+            dp = opendir(dir);
+            if (dp == NULL) {
+                perror("opendir error");
+                return;
+            }
+            // 读取目录项
+            while((sdp = readdir(dp)) != NULL) {
+                if (strcmp(sdp->d_name, ".") == 0 || strcmp(sdp->d_name, "..") == 0) {
+                    continue;
+                }
+                //fprintf();
+                // 目录项本身不可访问, 拼接. 目录/目录项
+                sprintf(path, "%s/%s", dir, sdp->d_name);
+
+                // 判断文件类型,目录递归进入,文件显示名字/大小
+                //isFile(path);    
+                (*func)(path);
+            }
+
+            closedir(dp);
+
+            return ;
+        }
+
+        void isFile(char *name)
+
+            int ret = 0;
+            struct stat sb;
+
+            // 获取文件属性, 判断文件类型
+            ret = stat(name, &sb);
+            if (ret == -1) {
+                perror("stat error");
+                return ;
+            }
+            // 是目录文件
+            if (S_ISDIR(sb.st_mode)) {
+                read_dir(name, isFile);
+            }
+            // 是普通文件, 显示名字/大小
+            printf("%10s\t\t%ld\n", name, sb.st_size);
+
+            return;
+        }
 
 
+        int main(int argc, char *argv[])
+        {
+            // 判断命令行参数
+            if (argc == 1) {
+                isFile(".");
+            } else {
+                isFile(argv[1]);
+            }
+
+            return 0;
+        }
+
+```
+
+# 20.重定向dup和dup2
+`dup`和`dup2`也是两个非常有用的调用，它们的作用都是用来复制一个文件的描述符。
+
+`dup（)`:也称之为文件描述符复制函数，在某些场景下非常有用，比如：标准输入/输出重定向
+```C++
+    dup 和 dup2：
+
+	int dup(int oldfd);		文件描述符复制。
+
+		oldfd: 已有文件描述符
+
+		返回：新文件描述符。
+
+	int dup2(int oldfd, int newfd); 文件描述符复制。重定向。
+
+```
+
+# 21.fcntl函数实现dup
+```
+fcntl 函数实现 dup：
+
+	int fcntl(int fd, int cmd, ....)
+
+	cmd: F_DUPFD
+
+	参3:  	被占用的，返回最小可用的。
+
+		未被占用的， 返回=该值的文件描述符。
+```
