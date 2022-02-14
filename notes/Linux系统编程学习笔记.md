@@ -39,6 +39,9 @@
 - [20.重定向dup和dup2](#20重定向dup和dup2)
 - [21.fcntl函数实现dup](#21fcntl函数实现dup)
 - [22.进程相关概念](#22进程相关概念)
+- [23.进程控制块PCB](#23进程控制块pcb)
+- [24.进程控制](#24进程控制)
+  - [24.1fork函数](#241fork函数)
 
 
 # 1.Linux文件介绍
@@ -1033,3 +1036,100 @@ fcntl 函数实现 dup：
 # 22.进程相关概念
 * 程序: 死的.只占用磁盘空间.                        --剧本.
 * 进程: 活的.运行起来的程序.占用内存,cpu等系统资源.  -- 戏曲.
+
+
+
+# 23.进程控制块PCB
+* 进程ID
+* 进程状态(5种):
+  1. 初始态
+  2. 就绪态(等待cpu分配时间片)
+  3. 运行态
+  4. 挂起态(等待除CPU以外的其他资源主动放弃cpu)
+  5. 终止态
+* 当前工作目录(Current Working Directory)  
+* umask掩码
+* 文件描述符
+* 和信号相关的信息
+* 用户ID和组ID
+
+
+# 24.进程控制
+## 24.1fork函数
+`pid_t fork(void)`:
+创建子进程。父子进程各自返回。父进程返回子进程pid。 子进程返回 0.
+```C++
+        #include <stdio.h>
+        #include <stdlib.h>
+        #include <string.h>
+        #include <unistd.h>
+        #include <pthread.h>
+
+        int main(int argc, char *argv[])
+        {
+            printf("before fork-1-\n");     // 在fork之前打印,父进程执行,只执行一次
+            printf("before fork-2-\n");
+            printf("before fork-3-\n");
+            printf("before fork-4-\n");
+
+            pid_t pid = fork();             // 创建子进程
+            if (pid == -1) {
+                perror("fork error");
+                exit(1);
+
+            } else if (pid == 0) {          // 子进程
+                
+                printf("---child is created\n");
+
+            } else if (pid > 0) {           // 父进程
+
+                printf("---parent process: my child is %d\n", pid);
+            }
+            
+            printf("===================end of file\n");  // 父子进程各自执行一次.
+
+            return 0;
+        }
+
+
+        /*
+            最后一句话出现两遍,中间父子进程先后无关
+            执行结果特殊:
+            before fork-1-
+            before fork-2-
+            before fork-3-
+            before fork-4-
+            ---parent process: my child is 7969
+            ---child is created
+            ===================end of file
+            ===================end of file
+        */
+```
+* 练习题:循环创建多个子进程  
+```C++
+        #include <stdio.h>
+        #include <stdlib.h>
+        #include <string.h>
+        #include <unistd.h>
+        #include <pthread.h>
+
+        int main(int argc, char *argv[])
+        {
+            int i;
+
+            for (i = 0; i < 5; i++) {       
+                if (fork() == 0)        // 循环期间, 子进程不 fork
+                    break;
+            }
+            if (5 == i) {       // 父进程, 从 表达式 2 跳出
+                sleep(5);
+                printf("I'm parent \n");
+            } else {            // 子进程, 从 break 跳出
+                sleep(i);
+                printf("I'm %dth child\n", i+1);
+            }
+
+            return 0;
+        }
+
+```
