@@ -42,6 +42,13 @@
 - [23.进程控制块PCB](#23进程控制块pcb)
 - [24.进程控制](#24进程控制)
   - [24.1fork函数](#241fork函数)
+  - [24.2父子进程gdb调试](#242父子进程gdb调试)
+  - [24.3孤儿进程](#243孤儿进程)
+  - [24.4僵尸进程](#244僵尸进程)
+  - [24.5wait函数和waitpid函数](#245wait函数和waitpid函数)
+  - [24.6exec函数族](#246exec函数族)
+- [25.进程间通信](#25进程间通信)
+  
 
 
 # 1.Linux文件介绍
@@ -1057,7 +1064,10 @@ fcntl 函数实现 dup：
 # 24.进程控制
 ## 24.1fork函数
 `pid_t fork(void)`:
-创建子进程。父子进程各自返回。父进程返回子进程pid。 子进程返回 0.
+创建子进程。父子进程各自返回。父进程返回子进程pid。 子进程返回 0.  
+
+`getpid();getppid();`
+循环创建N个子进程模型。 每个子进程标识自己的身份。
 ```C++
         #include <stdio.h>
         #include <stdlib.h>
@@ -1133,3 +1143,278 @@ fcntl 函数实现 dup：
         }
 
 ```
+fork后:  
+1. 父子进程相同的  :
+   
+   刚fork后。 data段、text段、堆、栈、环境变量、全局变量、宿主目录位置、进程工作目录位置、信号处理方式
+
+2. 父子进程不同的:
+   
+   进程id、返回值、各自的父进程、进程创建时间、闹钟、未决信号集
+3. 父子进程共享:
+   
+   1. 文件描述符
+   2. mmap映射区
+   3. 读时共享,写时复制  ---------------全局变量
+
+注意: fork后先产生父进程还是子进程不确定,取决于内核所使用的的调度算法
+
+## 24.2父子进程gdb调试
+* gdb调试：
+	* 设置父进程调试路径：set follow-fork-mode parent (默认)
+
+	* 设置子进程调试路径：set follow-fork-mode child
+
+## 24.3孤儿进程
+孤儿进程：
+父进程先于子进终止，子进程沦为“孤儿进程”，会被 init 进程领养(init进程干不死)。
+
+## 24.4僵尸进程
+僵尸进程：
+子进程终止，父进程尚未对子进程进行回收，子进程残留资源(PCB)在此期间，子进程为“僵尸进程”。  kill 对其无效。(杀死方法,把父进程干死,然后僵尸进程变成孤儿进程,然后被操作系统回收)
+
+
+## 24.5wait函数和waitpid函数
+```
+wait函数：	回收子进程退出资源， 阻塞回收任意一个。
+
+	pid_t wait(int *status)
+
+	参数：（传出） 回收进程的状态。
+
+	返回值：成功： 回收进程的pid
+
+		失败： -1， errno
+
+	函数作用1：	阻塞等待子进程退出
+
+	函数作用2：	清理子进程残留在内核的 pcb 资源
+
+	函数作用3：	通过传出参数，得到子进程结束状态
+
+	
+	获取子进程正常终止值：
+
+		WIFEXITED(status) --》 为真 --》调用 WEXITSTATUS(status) --》 得到 子进程 退出值。
+
+	获取导致子进程异常终止信号：
+
+		WIFSIGNALED(status) --》 为真 --》调用 WTERMSIG(status) --》 得到 导致子进程异常终止的信号编号。
+
+```
+```
+waitpid函数：	指定某一个进程进行回收。可以设置非阻塞。		
+	waitpid(-1, &status, 0) == wait(&status);
+
+	pid_t waitpid(pid_t pid, int *status, int options)
+
+	参数：
+		pid：指定回收某一个子进程pid
+
+			> 0: 待回收的子进程pid
+
+			-1：任意子进程
+
+			0：同组的子进程。
+
+		status：（传出） 回收进程的状态。
+
+		options：WNOHANG 指定回收方式为，非阻塞。
+
+	返回值：
+
+		> 0 : 表成功回收的子进程 pid
+
+		0 : 函数调用时， 参3 指定了WNOHANG， 并且，没有子进程结束。
+
+		-1: 失败。errno
+
+
+总结：
+
+	wait、waitpid	一次调用，回收一个子进程。
+
+			想回收多个。while 
+
+
+```
+--------------------
+```C++
+
+        #include <stdio.h>
+        #include <stdlib.h>
+        #include <unistd.h>
+        #include <sys/wait.h>
+
+        int main(void)
+        {
+            pid_t pid, wpid;
+            int status;
+
+            pid = fork();
+            if (pid == 0) {
+                printf("---child, my id= %d, going to sleep 10s\n", getpid());
+                sleep(10);
+                printf("-------------child die--------------\n");
+                return 73;
+            } else if (pid > 0) {
+                //wpid = wait(NULL);          // 不关心子进程结束原因
+                wpid = wait(&status);       // 如果子进程未终止,父进程阻塞在这个函数上
+                if (wpid == -1) {
+                    perror("wait error");
+                    exit(1);
+                }
+                if (WIFEXITED(status)) {        //为真,说明子进程正常终止. 
+                    printf("child exit with %d\n", WEXITSTATUS(status));
+
+                }
+                if (WIFSIGNALED(status)) {      //为真,说明子进程是被信号终止.
+
+                    printf("child kill with signal %d\n", WTERMSIG(status));
+                }
+
+                printf("------------parent wait finish: %d\n", wpid);
+            } else {
+                perror("fork");
+                return 1;
+            }
+
+            return 0;
+        }
+
+```
+* 小作业:  回收第三个子进程
+
+```C++
+        #include <stdio.h>
+        #include <stdlib.h>
+        #include <string.h>
+        #include <unistd.h>
+        #include <sys/wait.h>
+        #include <pthread.h>
+
+
+        int main(int argc, char *argv[])
+        {
+            int i;
+            pid_t pid, wpid, tmpid;
+
+            for (i = 0; i < 5; i++) {       
+                pid = fork();
+                if (pid == 0) {       // 循环期间, 子进程不 fork 
+                    break;
+                }
+                if (i == 2) {
+                    tmpid = pid;
+                    printf("--------pid = %d\n", tmpid);
+                }
+            }
+
+            if (5 == i) {       // 父进程, 从 表达式 2 跳出
+        //      sleep(5);
+
+                //wait(NULL);                           // 一次wait/waitpid函数调用,只能回收一个子进程.
+                //wpid = waitpid(-1, NULL, WNOHANG);    //回收任意子进程,没有结束的子进程,父进程直接返回0 
+                //wpid = waitpid(tmpid, NULL, 0);       //指定一个进程回收, 阻塞等待
+                printf("i am parent , before waitpid, pid = %d\n", tmpid);
+
+                //wpid = waitpid(tmpid, NULL, WNOHANG);   //指定一个进程回收, 不阻塞
+                wpid = waitpid(tmpid, NULL, 0);         //指定一个进程回收, 阻塞回收
+                if (wpid == -1) {
+                    perror("waitpid error");
+                    exit(1);
+                }
+                printf("I'm parent, wait a child finish : %d \n", wpid);
+
+            } else {            // 子进程, 从 break 跳出
+                sleep(i);
+                printf("I'm %dth child, pid= %d\n", i+1, getpid());
+            }
+
+            return 0;
+        }
+
+
+```
+* 小作业: 回收多个子进程
+```C++
+            // 回收多个子进程
+
+            #include <stdio.h>
+            #include <stdlib.h>
+            #include <string.h>
+            #include <unistd.h>
+            #include <sys/wait.h>
+            #include <pthread.h>
+
+
+            int main(int argc, char *argv[])
+            {
+                int i;
+                pid_t pid, wpid;
+
+                for (i = 0; i < 5; i++) {       
+                    pid = fork();
+                    if (pid == 0) {       // 循环期间, 子进程不 fork 
+                        break;
+                    }
+                }
+
+                if (5 == i) {       // 父进程, 从 表达式 2 跳出
+                    /*
+                    while ((wpid = waitpid(-1, NULL, 0))) {     // 使用阻塞方式回收子进程
+                        printf("wait child %d \n", wpid);
+                    }
+                    */
+                    while ((wpid = waitpid(-1, NULL, WNOHANG)) != -1) {     //使用非阻塞方式,回收子进程.
+                        if (wpid > 0) {
+                            printf("wait child %d \n", wpid);
+                        } else if (wpid == 0) {
+                            sleep(1);
+                            continue;
+                        }
+                    }
+
+                } else {            // 子进程, 从 break 跳出
+                    sleep(i);
+                    printf("I'm %dth child, pid= %d\n", i+1, getpid());
+                }
+
+                return 0;
+            }
+
+
+```
+
+
+## 24.6exec函数族
+```
+exec函数族：
+
+	使进程执行某一程序。成功无返回值，失败返回 -1
+
+	int execlp(const char *file, const char *arg, ...);		借助 PATH 环境变量找寻待执行程序
+
+		参1： 程序名
+
+		参2： argv0
+
+		参3： argv1
+
+		...： argvN
+
+		哨兵：NULL
+
+	int execl(const char *path, const char *arg, ...);		自己指定待执行程序路径。
+
+	int execvp();
+
+ps ajx --> pid ppid gid sid
+```
+# 25.进程间通信
+* IPC 进程间通信
+* 目前常用的进程间通信的方法有:
+  1. 管道(使用最简单)
+  2. 信号(开销最小);
+  3. 共享映射区(无血缘关系)
+  4. 本地套接字(最稳定)
