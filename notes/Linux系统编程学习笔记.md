@@ -1539,7 +1539,7 @@ int pthread_create(pthread_t *tid,const pthread_atter_t *attr, void *(*start_rou
 # 29.进程与线程控制源语对比
 |线程控制源语|进程控制源语|
 |:-:|:-:|
-|phtread_create()|fork()|
+|pthread_create()|fork()|
 |pthread_self()|getpid()|
 |pthread_exit()|exit()|
 |pthread_join()|wait()/waitpid()|
@@ -1571,12 +1571,12 @@ int pthread_create(pthread_t *tid,const pthread_atter_t *attr, void *(*start_rou
 
 ## 31.2使用互斥锁的一般结构
 1. `pthread_mutex_t lock;` 创建锁
-2. `phtread_mutex_init;` 初始化
+2. `pthread_mutex_init;` 初始化
 3. `pthread_mutex_lock;` 加锁
 4. 访问共享数据(stdout)
-5. `pthread_mutext_unlock();`解锁
-6. `phtread_mutex_destroy;` 销毁锁
-* 注意事项: **尽量保证所得颗度,越小越好(使用完成后要立即解锁)**
+5. `pthread_mutet_unlock();`解锁
+6. `pthread_mutex_destroy;` 销毁锁
+* 注意事项: **尽量保证锁的颗粒度,越小越好(使用完成后要立即解锁)**
 
 ```C++
 初始化互斥量:
