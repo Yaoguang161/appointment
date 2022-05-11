@@ -15,6 +15,13 @@
 - [11.Lambda表达式](#11lambda表达式)
 - [12.QMainWindow](#12qmainwindow)
   - [12.1资源文件添加(vs2019方式不太一样)](#121资源文件添加vs2019方式不太一样)
+- [13.对话框创建](#13对话框创建)
+- [14.标准对话框QMessageBox](#14标准对话框qmessagebox)
+- [15.其他常用的标准对话框](#15其他常用的标准对话框)
+- [16.界面布局](#16界面布局)
+- [17.常用控件](#17常用控件)
+  - [按钮组](#按钮组)
+  - [QListWidget](#qlistwidget)
   
 # 1.QT简介
 * 1991年由奇趣科技开发
@@ -83,6 +90,7 @@ int main(int argc, char *argv[])
 * 自动对齐 `ctrl + i`
 * 同名之间的.h .cpp切换   ` F4`
 * 帮助文档 F1 左侧列表按钮  或`F:\Qt\qt\5.6\mingw49_32\bin\assistant.exe` QT帮助文档
+* 注意: qt添加资源需要编译,不然不会显示出来
 
 
 # 5.QPushButton按钮
@@ -186,3 +194,62 @@ int main(int argc, char *argv[])
 * 用编辑的方式打开 res.qrc
 * 添加前置  - 添加文件
 * 使用" : + 前缀名 + 文件名"
+
+# 13.对话框创建
+* ## 13.1对话框分类:
+* 模态对话框 与 非模态对话框
+  * 模态对话框 不可以对其他窗口进行操作
+  * 非模态对话框  可以对其他窗口进行操作
+  * 模态对话框创建
+    * `QDialog dlg(this);`
+    * `dlg.exec()`
+  * 非模态对话框创建
+    * `QDialog* dlg2 = new QDialog(this);`
+    * `dlg2->show();`
+    * 设置属性 `dlg2->setAttribute(Qt::WA_DeleteOnClose);` 即对话框不关闭
+  
+ 
+# 14.标准对话框QMessageBox
+* 利用静态成员函数可以弹出警告,询问,信息,错误对话框
+* 参数1: 父窗口;参数二: 标题; 参数3:提示信息; 参数4:按键类型; 参数5: 默认关联回车按键;
+* `QMessageBox::question(this, "询问", "question", QMessageBox::Save | QMessageBox::Cancel, QMessageBox::Cancel)`
+* 返回值代表用户选择按钮
+ 
+
+# 15.其他常用的标准对话框
+* 颜色对话框 `QColor color = QColorDialog::getColor(Qt::red);`
+* 文件对话框`QString fileName = QFileDialog::getOpenFileName(this, "打开文件", "C:\\Users\\Asaki\\Desktop", "(*.txt)");`
+* 字体对话框
+``` C++
+		bool flag;
+		QFont font = QFontDialog::getFont(&flag, QFont("华文彩云", 36));
+		qDebug() << "字体" << font.family().toUtf8().data()
+			<< "字号" << font.pointSize()
+			<< "是否加粗: " << font.bold()
+			<< "是否倾斜" << font.italic();
+```
+
+# 16.界面布局
+1. 设计登录窗口(经典宽高369px,270px)
+2. 有用户名,密码,编辑框,登录和退出按钮
+3. 灵活运用弹簧进行界面布局
+
+# 17.常用控件
+## 按钮组
+* `QPushButton`最常用按钮,里面可以加图片
+* `QToolButton`工具按钮,用于显示图片
+  * `toolButtonStyle`设置显示图片和文件
+  * `autoRalse`透明凸起效果
+* `QRadioButton`单选按钮
+  * 默认选中 `setChecked(true)`
+* `QCheckBox`复选按钮
+  * `stateChanged`信号
+  * 未选中  0
+  * 半选中 1
+  * 选中  2
+## QListWidget
+1. 创建项`QListWidgetItem* item = new QListWidgetItem("锄禾日当午");`
+2. 将项目添加到控件中
+3. `ui->listWidget->addItem(item);`
+4. 设置对其方式`item->setTextAlignment(Qt::AlignHCenter);`
+5. `ui->listWidget->additems(list);` 可以一次性放入所有内容
