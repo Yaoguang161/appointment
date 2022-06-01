@@ -1,3 +1,4 @@
+- [0.写在前面的提醒](#0写在前面的提醒)
 - [1.QT简介](#1qt简介)
 - [2.pro文件介绍](#2pro文件介绍)
 - [3.qt项目创建](#3qt项目创建)
@@ -22,7 +23,29 @@
 - [17.常用控件](#17常用控件)
   - [按钮组](#按钮组)
   - [QListWidget](#qlistwidget)
+  - [QTreeWidget树控件](#qtreewidget树控件)
+  - [QTableWidget 表格控件使用](#qtablewidget-表格控件使用)
+  - [其他常用控件](#其他常用控件)
+- [18.自定义空间封装](#18自定义空间封装)
+- [19.Qt鼠标常用实践](#19qt鼠标常用实践)
+- [20.定时器](#20定时器)
+- [21.定时器2](#21定时器2)
+- [22.事件分发器](#22事件分发器)
+- [23.事件过滤器](#23事件过滤器)
+- [24.QPainter绘图](#24qpainter绘图)
+- [25.绘图高级设置](#25绘图高级设置)
+- [26.绘图设备](#26绘图设备)
+- [27.文件读写](#27文件读写)
+  - [27.1读文件](#271读文件)
+  - [27.2 写文件](#272-写文件)
+  - [28.文件信息类](#28文件信息类)
   
+# 0.写在前面的提醒
+* 万一出现无法找到头文件的情况,可以试试将`#include <smallwidget.h>` 改成 `#include "smallwidget"`
+* 添加设计师类时, 可以重新添加`qt class`
+* .ui界面文件无法打开,或者打开就报错,可以谷歌修改一下启动方式(exe),使用原生的方式启动,不要用vs自带的启动方式
+* 
+
 # 1.QT简介
 * 1991年由奇趣科技开发
 * 支持的平台: XP,win7,win8,win10,mac,嵌入式linux
@@ -253,3 +276,127 @@ int main(int argc, char *argv[])
 3. `ui->listWidget->addItem(item);`
 4. 设置对其方式`item->setTextAlignment(Qt::AlignHCenter);`
 5. `ui->listWidget->additems(list);` 可以一次性放入所有内容
+
+## QTreeWidget树控件
+1. 设置头 `ui.treeWidget->setHeaderLabels(QStringList() << "英雄" << "英雄简介");`
+2. 创建根项目`QTreeWidgetItem* liItem = new QTreeWidgetItem(QStringList() << "力量");`
+3. 将根放入树控件中`ui.treeWidget->addTopLevelItem(liItem);`
+4. 挂载子项目`QTreeWidgetItem* l1 = new QTreeWidgetItem(heroL1);`
+	`liItem->addChild(l1);`
+
+
+## QTableWidget 表格控件使用
+1.	设置列  `ui->tableWidget->setColumnCount(3);`
+2.	设置水平表头  `ui->tableWidget->setHorizontalHeaderLabels(QStringList()<<"姓名"<<"性别"<<"年龄");`
+3.	设置行数  `ui->tableWidget->setRowCount(5);`
+4.	设置正文 
+5.	`ui->tableWidget->setItem(行,列 , new QTableWidgetItem(“字符串”));`
+## 其他常用控件
+1.	栈控件  
+  a.	`ui->stackedWidget->setCurrentIndex(0); `   
+  b.	切换栈显示内容
+2. 下拉框
+	a. `ui->comboBox->addItem("奔驰");  `
+  b. 设置选中   
+  c. `ui->comboBox->setCurrentIndex(2);  `
+  d. `ui->comboBox->setCurrentText("拖拉机");`  
+3.	Qlabel显示图片
+  ```C++
+    	ui->label_img->setPixmap(QPixmap(":/Image/butterfly.png"));
+  ```
+4. 	QLabel显示gif图片
+  a. `QMovie * movie =new QMovie(":/Image/mario.gif");`
+  b. `ui->label_movie->setMovie(movie);`
+  c. `movie->start();`
+
+
+# 18.自定义空间封装
+1. 右键项目- 添加新文件
+2. Qt -Qt设计师界面类 (vs中使用添加qt class会出现头文件和cpp文件,ui文件,不要自己单独一个一个添加,没有关联起来)
+3. 在ui文件中设计自定义空间
+4. 在主窗口中 拖拽 widget做提升的操作
+5. 在自定义控件中 封装对外接口
+   1. SpinBox 和 slider 控件交互
+   2. getData 获取显示数字
+   3. setData设置数字
+
+
+# 19.Qt鼠标常用实践
+1. 鼠标进入 `EnterEvent`
+2. 鼠标离开 `LeaveEvent`
+3. 鼠标按下 `MousePressEvent`
+4. 鼠标释放 `MouseReleaseEvent`
+5. 鼠标移动 `MouseMoveEvent`
+6. 获取 x和y的坐标 `ev->x()` 和 `ev->y()`
+7. 判断如果左键按下 `ev->button()` 或者移动 `ev->butons() & `
+8. 设置鼠标追踪状态 `setMouseTracking(true)`
+
+# 20.定时器
+1. 定时器时间 `void timerEvent(QTimerEvent *e);`
+2. 启动定时器 `id1 = startTimer(毫秒)`
+3. 判断具体定时器的标志 `e->timerId() == id1`
+
+# 21.定时器2
+1. 通过定时器类实现  `QTimer类`
+2. 创建定时器对象 `QTimer *timer1 = new QTimer(this);`
+3. 开启定时器 `timer1 ->start(x毫秒)`
+4. 每隔x毫秒 会抛出一个信号timeout出来
+5. 监听信号处理逻辑
+6. 暂停定时器 `time1 -> stop();`
+
+# 22.事件分发器
+* 用途: 用于分发事件
+* 原型: `bool event(QEvent *e)`
+* 返回值如果是`true`用户代表用户自己处理事件,不在向下分发
+  
+
+# 23.事件过滤器
+1. 给控件安装过滤器 `ui.label->installEventFilter(this);`
+2. 重写过滤器事件
+`bool Widget::eventFilter(QObject* obj, QEvent* e)`
+
+# 24.QPainter绘图
+1. 绘图事件 `void painEvent(QPaintEvent);`
+2. 创建画家 `QPainter painter(this);` this代表绘图设备
+3. 画线,圆,矩形,文字
+4. 设置画笔, `QPen painter.setPen()` 设置笔宽度,风格
+5. 设置画刷 `QBrush painter.setBrush();` 设置画刷风格
+
+
+# 25.绘图高级设置
+1. 设置抗锯齿 `painter.setRenderHint(QPainter::Antialiasing);`
+2. 移动画家 `painter.translate(100,0);`
+3. 保存画家状态 `painter.save();`
+4. 取出画家状态 `painter.restore();`
+5. 利用画家画资源图片`painter.drawPixmap(posX,0,QPixmap(":/Image/Luffy.png"));`
+6. 手动调用绘图事件 `update();`
+
+# 26.绘图设备
+1. `QPixmap` 对不同的平台显示做了优化
+2. `QImage` 可以对像素级进行访问
+3. `Qpicture`  记录和重新绘图指令
+
+
+# 27.文件读写
+## 27.1读文件
+1. `QFile file(文件路径)`
+2. `file.open() `指定打开方式, `QIODevice::ReadOnly`
+3. 利用`file.readAll`一次性全部读取
+4. 利用`file.readLine`按行读取
+5. `file.close`关闭文件对象
+6. 读取`gbk`格式
+   1. `QTextCodec *codec = QTextCodec::codecForName("gbk");`
+   2. `codec0>toUnicode(array)`
+## 27.2 写文件
+1. `QFile file(路径)`
+2. `file.open(QIODevice::Append); //QIODevice::Append 追加的方式写文件
+3. `file.write("啊啊啊啊");`
+4. `file.colse();`
+
+
+## 28.文件信息类
+1. `QFileInfo(路径)`
+2. `info`获取文件信息
+3. 后缀名: `suffix` 文件大小 : `size` 文件名: `filename` 文件路径 `filePath`
+4. 创建日期: create() //已经弃用可以使用`info.fileTime(QFileDevice::FileBirthTime)`替换
+
