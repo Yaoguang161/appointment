@@ -1,4 +1,6 @@
 - [CMake教程](#cmake教程)
+- [主要使用方式](#主要使用方式)
+- [修改文件后使用方式](#修改文件后使用方式)
 - [构建与安装方式](#构建与安装方式)
 - [指令 -B --build](#指令--b---build)
   - [解释:](#解释)
@@ -14,6 +16,25 @@
 
 
 # CMake教程
+
+# 主要使用方式
+1. 在目录下同时用`CMakeLists.txt`文件和`main.cpp`文件,两个文件中的代码都是正确的
+2. 执行在上面两文件的目录下执行`cmake -B build`
+3. 接着执行 `cmake --build build`
+4. 然后会在build下生成main可执行文件
+5. 使用`build/main`即可运行程序
+
+# 修改文件后使用方式
+1. 读取当前目录的` CMakeLists.txt`，并在 `build `文件夹下生成`build/Makefile`：  
+`cmake -B build`
+2. 让 make 读取 build/Makefile，并开始构建 a.out：
+`make -C build`
+    1. 以下命令和上一个等价，但更跨平台：`cmake --build build`
+    2. 也可以`cd build && make`
+3. 执行生成的 a.out：
+`build/a.out`
+4. 如果源文件修改了，直接进行第2步即可，不用`rm-rf build`.
+
 
 # 构建与安装方式
 1. `mkdir build` 需要先创建build目录
